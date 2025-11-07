@@ -15,11 +15,6 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     if (token) {
       localStorage.setItem("token", token);
-      // try decode to get id if needed
-      try {
-        const decoded = jwtDecode(token);
-        // you can store id if needed: decoded.id
-      } catch (e) {}
     } else {
       localStorage.removeItem("token");
     }

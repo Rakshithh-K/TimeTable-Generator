@@ -93,7 +93,16 @@ export const login = async (req, res) => {
       expiresIn: "1d",
     });
 
-    res.status(200).json({ message: "Login successful", token, role: user.role });
+    res.status(200).json({ 
+      message: "Login successful", 
+      token, 
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role
+      }
+    });
   } catch (error) {
     console.error("Login error:", error);
     res.status(500).json({ message: "Login failed" });
@@ -129,5 +138,20 @@ export const getPendingFaculties = async (req, res) => {
     res.json(pending);
   } catch (error) {
     res.status(500).json({ message: "Failed to fetch pending faculties" });
+  }
+};
+
+// Get current user data
+export const getMe = async (req, res) => {
+  try {
+    const user = req.user;
+    res.json({
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to fetch user data" });
   }
 };

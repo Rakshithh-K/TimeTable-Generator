@@ -71,3 +71,47 @@ export const getLatestTimetable = async (req, res) => {
   res.json({ data: latest.data }); // ✅ wrap inside object
 };
 
+export const getStudentTimetable = async (req, res) => {
+  try {
+    const latest = await Timetable.findOne().sort({ created_at: -1 });
+    if (!latest) {
+      return res.json([]);
+    }
+
+    // Transform timetable data into a format suitable for student view
+    const timetableGrid = {};
+    
+    // Initialize time slots
+    timeSlots.forEach(time => {
+      timetableGrid[time] = {
+        time,
+        monday: "",
+        tuesday: "",
+        wednesday: "",
+        thursday: "",
+        friday: ""
+      };
+    });
+
+    // Fill in the courses
+    latest.data.forEach(session => {
+      const dayKey = {
+        'Mon': 'monday',
+        'Tue': 'tuesday', 
+        'Wed': 'wednesday',
+        'Thu': 'thursday',
+        'Fri': 'friday'
+      }[session.day];
+      
+      if (dayKey && timetableGrid[session.time]) {
+        timetableGrid[session.time][dayKey] = `${session.course} (${session.room})`;
+      }
+    });
+
+    const result = Object.values(timetableGrid);
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ message: "Error fetching timetable", error: err.message });
+  }
+};
+

@@ -27,8 +27,10 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-6 py-3 flex justify-between items-center">
         {/* Left section */}
         <div className="flex items-center gap-6">
-          <Link to="/" className="flex items-center gap-2 text-blue-600 font-bold text-xl">
-            TESTING
+          <Link to="/" className="flex items-center gap-2">
+            <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 py-2 rounded-lg font-bold text-xl tracking-wider shadow-lg hover:shadow-xl transition-all duration-300">
+              NOVA
+            </div>
           </Link>
           <NavLink
             to="/"
@@ -40,17 +42,28 @@ export default function Navbar() {
           >
             Home
           </NavLink>
+          {user?.role === "student" && (
+            <NavLink
+              to="/student/dashboard"
+              className={({ isActive }) =>
+                isActive
+                  ? "text-white bg-blue-600 font-medium p-3 rounded-md transition"
+                  : "text-gray-700 font-medium p-3 rounded-md hover:text-white hover:bg-blue-600 transition"
+              }
+            >
+              Dashboard
+            </NavLink>
+          )}
           <NavLink
-  to="/timetable"
-  className={({ isActive }) =>
-    isActive
-      ? "text-white bg-blue-600 font-medium p-3 rounded-md transition"
-      : "text-gray-700 font-medium p-3 rounded-md hover:text-white hover:bg-blue-600 transition"
-  }
->
-  Timetable
-</NavLink>
-
+            to="/timetable"
+            className={({ isActive }) =>
+              isActive
+                ? "text-white bg-blue-600 font-medium p-3 rounded-md transition"
+                : "text-gray-700 font-medium p-3 rounded-md hover:text-white hover:bg-blue-600 transition"
+            }
+          >
+            Timetable
+          </NavLink>
         </div>
 
         {/* Right section */}

@@ -5,6 +5,7 @@ import {
   login,
   approveFaculty,
   getPendingFaculties,
+  getMe,
 } from "../controllers/authController.js";
 import { protect, adminOnly } from "../middleware/authMiddleware.js";
 
@@ -14,6 +15,9 @@ const router = express.Router();
 router.post("/signup", sendOTP);
 router.post("/verify-otp", verifyOTP);
 router.post("/login", login);
+
+// ✅ Protected routes
+router.get("/me", protect, getMe);
 
 // ✅ Admin routes
 router.get("/pending-faculties", protect, adminOnly, getPendingFaculties);

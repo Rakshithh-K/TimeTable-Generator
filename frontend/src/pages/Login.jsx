@@ -15,12 +15,8 @@ export default function Login() {
     try {
       const res = await loginReq(form);
       const token = res.data.token;
-      const savedUser = JSON.parse(localStorage.getItem("user") || "null");
-      if (savedUser && savedUser.email === form.email) {
-        login({ token, userObj: savedUser });
-      } else {
-        login({ token, userObj: { name: form.email.split("@")[0], email: form.email } });
-      }
+      const userObj = res.data.user;
+      login({ token, userObj });
       navigate("/");
     } catch (err) {
       alert(err?.response?.data?.message || "Login failed");
